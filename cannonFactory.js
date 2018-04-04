@@ -15,19 +15,16 @@ const cannonFactory = (type) => {
     name = "Light Cannon";
     damage = generateRandomNumber(5,15);
     accuracy = generateRandomNumber(80,95);
-    fireSpeed = generateRandomNumber(100,150);
   }
   if (type == 1) {
     name = "Heavy Cannon";
     damage = generateRandomNumber(15,25);
     accuracy = generateRandomNumber(75,95);
-    fireSpeed = generateRandomNumber(100,180);
   }
   if (type == 2) {
     name = "Naval Gun";
-    damage = generateRandomNumber(25,40);
+    damage = generateRandomNumber(25,50);
     accuracy = generateRandomNumber(85,90);
-    fireSpeed = generateRandomNumber(150,200);
   }
 
   return {name, damage,accuracy,fireSpeed}

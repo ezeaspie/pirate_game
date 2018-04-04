@@ -1,7 +1,7 @@
 const playerFactory = (name) => {
   let armada = [];
 
-  armada.push(shipFactory(0),shipFactory(2),shipFactory(3),shipFactory(6));
+  armada.push(shipFactory(0,name),shipFactory(2,name),shipFactory(3,name),shipFactory(6,name));
 
   return {name, armada}
 }
