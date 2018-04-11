@@ -10,7 +10,7 @@
 
 ## Travel Mechanisms
 
-1. Show different ports. On click, take player to that port.
+1. ~~Show different ports. On click, take player to that port.~~ (4/11/18)
 2. Add a button to return to current port.
 2. Add a chance to run into pirates while traveling. The longer the trip, the higher the chance.
 3. Add chance to run into storm.
@@ -32,6 +32,9 @@
 2. Set a money tracking system.
 
 ## Different Port Shop Mechanisms
+
+## Dialogue Mechanisms
+1. Find a way to sort the dialog data to render options, phrases, and proper responses in an object or array of objects.
 
 ## Quest Mechanisms
 

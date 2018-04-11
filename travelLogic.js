@@ -11,7 +11,7 @@ const startTravel = (currentPort) => {
 
   $("#game").html(html);
 
-  let portArray = [portFactory("Union Harbor"),portFactory("Chantilly"),portFactory("Cape Spear"),portFactory("Acantilado"),portFactory("La Noria")];
+  let portArray = [portFactory(uh),portFactory("Chantilly"),portFactory("Cape Spear"),portFactory("Acantilado"),portFactory("La Noria")];
 
   for (var i = 0; i < portArray.length; i++) {
     let value = i;
@@ -22,4 +22,4 @@ const startTravel = (currentPort) => {
   }
 }
 
-//startTravel();
+startTravel();

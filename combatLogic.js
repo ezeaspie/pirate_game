@@ -82,8 +82,7 @@ const combatLoop = () => {
       }
     }
     let html = `
-    <div class="opponentMenu">
-    </div>
+    <h2 class="infotext">Cannon Break!</h2>
     <div class="opponent">
       ${opponentHtml}
     </div>
@@ -122,7 +121,9 @@ const combatLoop = () => {
       }
       if (playerShipArray.length === 0 || opponentShipArray.length === 0) {
         console.log("DEADER THAN DANKBOIS CHANNEL");
+        return true;
       }
+      return false;
     }
     //Basic Turn Logic.
 
@@ -135,21 +136,30 @@ const combatLoop = () => {
 
       console.log("USER " + turn);
       shipAttackOrder[turn].fireCannons(opponent, target,shipID,e,turn);
-      if (target.isDead()) {
+      if (target.isDead(shipID)) {
         console.log(true);
         if (shipID < turn){
           console.log(shipAttackOrder);
           shipAttackOrder.splice(shipID,1);
           turn--;
-          generateGameboard();
+          if(isGameOver()){
+            startTravel();
+          }
+          else{
+            setTimeout(generateGameboard, 3000);
+          }
         //Specific ID's for each ship are needed to select freely.
         }
         else {
           shipAttackOrder.splice(shipID,1);
           console.log(shipAttackOrder);
-          generateGameboard();
+          if (isGameOver()) {
+            startTravel();
+          }
+          else {
+            setTimeout(generateGameboard, 3000);
+          }
         }
-        isGameOver();
       }
       turn++;
     }
@@ -158,21 +168,30 @@ const combatLoop = () => {
 
       console.log("OPPONENT " + turn);
       shipAttackOrder[turn].fireCannons(player,target, shipID,e,turn);
-      if (target.isDead()) {
+      if (target.isDead(shipID)) {
         console.log(true);
         if (shipID < turn){
           console.log(shipAttackOrder);
           shipAttackOrder.splice(shipID,1);
           turn--;
-          generateGameboard();
+          if (isGameOver()) {
+            startTravel();
+          }
+          else {
+            setTimeout(generateGameboard, 3000);
+          }
         //Specific ID's for each ship are needed to select freely.
         }
         else {
           shipAttackOrder.splice(shipID,1);
           console.log(shipAttackOrder);
-          generateGameboard();
+          if (isGameOver()) {
+            startTravel();
+          }
+          else {
+            setTimeout(generateGameboard, 3000);
+          }
         }
-        isGameOver();
       }
       turn++;
     }
@@ -194,4 +213,4 @@ const combatLoop = () => {
 
 }
 
-combatLoop();
+//combatLoop();

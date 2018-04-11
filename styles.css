@@ -72,7 +72,7 @@ html {
 }
 
 .animatedmiss {
-  animation: miss 2s infinite;
+  animation: miss 3s 1;
 }
 @keyframes miss {
   0%{
@@ -80,12 +80,12 @@ html {
   }
   100%{
     opacity: 0;
-    transform: translateX(var(--miss-x)) translateY(var(--mousemiss-y));
+    transform: translateX(var(--mouse-x)) translateY(var(--mouse-y));
   }
 }
 
 .animatedhit {
-  animation:hit 2s infinite;
+  animation:hit 2.5s 1;
 }
 @keyframes hit {
   0% {
@@ -98,8 +98,49 @@ html {
   100%{
     opacity: 0;
     background:red;
-    transform: scale(1.1,1.1) translateX(var(--mouse-x)) translateY(var(--mouse-y));
+    transform: translateX(var(--mouse-x)) translateY(var(--mouse-y));
   }
 }
 
+.sinking {
+  animation:sink 3s 1;
+}
+@keyframes sink {
+  0% {
+    transform: translate(0px,0px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(50px) rotate(45deg);
+  }
+}
 
+.infotext {
+  opacity: 0;
+  text-align:center;
+  position:absolute;
+  top:40%;
+  left:0;
+  right:0;
+  margin-left:auto;
+  margin-right:auto;
+  z-index:100;
+}
+.cannonbreak {
+  opacity: 0;
+  animation: fadetext 2s infinite;
+}
+@keyframes fadetext {
+  0% {
+    transform: scale(1,1);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(2,2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1,1);
+    opacity: 0;
+  }
+}

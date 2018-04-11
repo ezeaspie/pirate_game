@@ -10,6 +10,8 @@ const portFactory = (config) => {
     bank = undefined OR bank object.
     marketplace = marketplace object.
   }
+
+
   */
 
   const renderHTML = () => {
@@ -51,9 +53,9 @@ const portFactory = (config) => {
     `
     $("#game").html(html);
 
-    /*$("#th").on("click", function() {
-      .../
-    });*/
+    $("#th").on("click", function() {
+      dialogBox("Antoinette","Hello there! How are you?", "I'm okay.", "Got any booze?", true);
+    });
 
     $("#travel").on("click", function() {
       startTravel();
@@ -62,4 +64,13 @@ const portFactory = (config) => {
   }
 
   return {name,renderHTML}
+}
+
+let uh = {
+  name: "Union Harbor",
+  townhall: true,
+  warehouse: true,
+  shipYard: true,
+  magic: true,
+  bank: true,
 }

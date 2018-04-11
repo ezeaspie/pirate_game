@@ -49,6 +49,10 @@ const shipFactory = (type,owner) => {
       if (generateRandomNumber(0,100) <= 1) {
         let num = generateRandomNumber(0,cannons.length-1);
         console.log("CANNON BREAK!");
+        $(".infotext").addClass("cannonbreak");
+        setTimeout(function(){
+          $(".infotext").removeClass("cannonbreak");
+        },2000)
         if (cannons.length != 0) {
           cannons.splice(num,1);
         }
@@ -63,12 +67,21 @@ const shipFactory = (type,owner) => {
       <p>${health}/${maxHealth}</p>
       <meter value="${health}" min="0" max="${maxHealth}"></meter>`;
     console.log("damage: " + amount + "health: "  + health);
+    let cannonHTML = "";
+    for (var i = 0; i < cannons.length; i++) {
+      cannonHTML += `<span class='projectile ${i}'></span>`;
+    }
     let selectedShip = $(`*[data-shipid="${id}"]`);
     selectedShip.find(".maxHealth-bar").html(html);
+    selectedShip.find(".cannonballs").html(cannonHTML);
   }
 
-  isDead = () => {
+  isDead = (id) => {
     if (health <= 0) {
+      $(`*[data-shipid="${id}"]`).addClass("sinking");
+      setTimeout(function(){
+        $(`*[data-shipid="${id}"]`).removeClass("sinking");
+      },3000);
       return true;
     }
     else {
@@ -77,29 +90,55 @@ const shipFactory = (type,owner) => {
   }
 
   fireCannons = (targetPlayer, targetShipObject, shipID,e,playerShipID) => {
-
+    console.log(shipID);
     for (let i = 0; i < cannons.length; i++) {
       let random = generateRandomNumber(0,100);
       let id = i;
-      if (cannons[id].accuracy > random) {
-        //cannonAudio.play();
-        const handleAnimation = (playerShip, e, animationStatus) => {
-          playerShip = $(`*[data-shipid=${playerShipID}]`).find(`.${i}`);
-          let offset = playerShip.offset();
-          playerShip.addClass("animatedhit");
-          let xcoord = e.clientX - offset.left;
-          let ycoord = -1 * e.clientY;
-          console.log(xcoord);
-          playerShip.css('--mouse-x', xcoord);
-          playerShip.css('--mouse-y', ycoord);
-        }
 
+      const handleAnimation = (playerShip, e, animationStatus) => {
+        playerShip = $(`*[data-shipid=${playerShipID}]`).find(`.${i}`);
+        offset = playerShip.offset();
+        let xcoord = undefined;
+        let ycoord = undefined;
+        let enemyCoords = $(`*[data-shipid=${shipID}]`).offset();
+        if (animationStatus == "hit") {
+          playerShip.addClass("animatedhit");
+          if(targetShipObject.owner == "opponent"){
+            xcoord = e.clientX - offset.left;
+            ycoord = -1 * e.clientY;
+          }
+          else{
+            xcoord = enemyCoords.left - offset.left;
+            ycoord = enemyCoords.top;
+          }
+        }
+        if (animationStatus == "miss") {
+          playerShip.addClass("animatedmiss");
+          if(targetShipObject.owner == "opponent"){
+            xcoord = e.clientX - offset.left - 200;
+            ycoord = -1 * e.clientY + 150;
+          }
+          else{
+            xcoord = enemyCoords.left - offset.left - 200;
+            ycoord = enemyCoords.top - 250;
+          }
+          
+        }
+        playerShip.css('--mouse-x', xcoord);
+        playerShip.css('--mouse-y', ycoord);
+        setTimeout(function(){
+          playerShip.removeClass("animatedhit animatedmiss");
+          console.log("removed classes");
+        },3000);
+      }
+
+      if (cannons[id].accuracy > random) {
+        cannonAudio.play();
         handleAnimation(playerShipID,e, "hit");
-        
         targetShipObject.takeDamage(cannons[id].damage,shipID,targetPlayer,e);
       }
       else {
-        console.log("Miss!");
+        handleAnimation(playerShipID,e,"miss");
       }
     }
   }
