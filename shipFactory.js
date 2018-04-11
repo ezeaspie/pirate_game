@@ -5,16 +5,36 @@ const shipFactory = (type,owner) => {
   let cannons = [];
   let cannonCapacity = 0;
   let capacity = 0;
+  let cannonAudio = new Audio("./cannon.wav");
 
   const generateRandomNumber = (min,max) => {
     let randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
     return randomNumber;
   }
+  calculateTotalDamage = () => {
+    let total = 0;
+    for (var i = 0; i < cannons.length; i++) {
+      total += cannons[i].damage;
+    }
+    return total;
+  }
 
-  generateHTML = (id='') => {
+
+  generateHTML = (id) => {
+    let cannonHTML = '';
+
+    for (var i = 0; i < cannons.length; i++) {
+      cannonHTML += `<span class='projectile ${i}'></span>`;
+    }
+
     let html = `
     <div class="ship ${name.toLowerCase()}" data-shipId="${id}">
+      <div class="cannonballs">
+      ${cannonHTML}
+      </div>
+      <p>${name}</p>
       <div class="maxHealth-bar">
+      <p>${health}/${maxHealth}</p>
       <meter value="${health}" min="0" max="${maxHealth}"></meter>
       </div>
       <div class="ship-image">
@@ -24,11 +44,26 @@ const shipFactory = (type,owner) => {
     return html;
   }
 
-  takeDamage = (amount,targetShip, targetPlayer) => {
+  takeDamage = (amount,id, targetPlayer,e) => {
+    const checkForCannonBreak = () => {
+      if (generateRandomNumber(0,100) <= 1) {
+        let num = generateRandomNumber(0,cannons.length-1);
+        console.log("CANNON BREAK!");
+        if (cannons.length != 0) {
+          cannons.splice(num,1);
+        }
+        else {
+          console.log("NO CANNONS LEFT ON THIS SHIP");
+        }
+      }
+    }
+    checkForCannonBreak();
     health -= amount;
-    let html = `<meter value="${health}" min="0" max="${maxHealth}"></meter>`;
+    let html = `
+      <p>${health}/${maxHealth}</p>
+      <meter value="${health}" min="0" max="${maxHealth}"></meter>`;
     console.log("damage: " + amount + "health: "  + health);
-    let selectedShip = $("." + targetPlayer.name).find(`*[data-shipid="${targetShip}"]`);
+    let selectedShip = $(`*[data-shipid="${id}"]`);
     selectedShip.find(".maxHealth-bar").html(html);
   }
 
@@ -41,19 +76,30 @@ const shipFactory = (type,owner) => {
     }
   }
 
-  fireCannons = (targetPlayer, targetShip) => {
-
-    let target = targetPlayer.armada[targetShip];
+  fireCannons = (targetPlayer, targetShipObject, shipID,e,playerShipID) => {
 
     for (let i = 0; i < cannons.length; i++) {
       let random = generateRandomNumber(0,100);
       let id = i;
       if (cannons[id].accuracy > random) {
-        console.log("Hit! " + random);
-        target.takeDamage(cannons[id].damage,targetShip,targetPlayer);
+        //cannonAudio.play();
+        const handleAnimation = (playerShip, e, animationStatus) => {
+          playerShip = $(`*[data-shipid=${playerShipID}]`).find(`.${i}`);
+          let offset = playerShip.offset();
+          playerShip.addClass("animatedhit");
+          let xcoord = e.clientX - offset.left;
+          let ycoord = -1 * e.clientY;
+          console.log(xcoord);
+          playerShip.css('--mouse-x', xcoord);
+          playerShip.css('--mouse-y', ycoord);
+        }
+
+        handleAnimation(playerShipID,e, "hit");
+        
+        targetShipObject.takeDamage(cannons[id].damage,shipID,targetPlayer,e);
       }
       else {
-        console.log("Miss!" + random);
+        console.log("Miss!");
       }
     }
   }
@@ -120,6 +166,6 @@ const shipFactory = (type,owner) => {
     cannons.push(cannonFactory(0));
   }
 
-  return {name, health, maxHealth,speed,cannons, cannonCapacity, capacity, isDead, generateHTML, owner, takeDamage, fireCannons}
+  return {name, health, maxHealth,speed,cannons, cannonCapacity, capacity, isDead, generateHTML, owner, takeDamage, calculateTotalDamage, fireCannons}
 
 }

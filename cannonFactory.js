@@ -1,6 +1,6 @@
 const cannonFactory = (type) => {
   let name = "";
-  let damage = "";
+  let damage = 0;
   let space = 10;
   let cost = 0;
   let accuracy = 0;
