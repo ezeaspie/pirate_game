@@ -54,7 +54,7 @@ const portFactory = (config) => {
     $("#game").html(html);
 
     $("#th").on("click", function() {
-      dialogBox("Antoinette","Hello there! How are you?", "I'm okay.", "Got any booze?", true);
+      dialogueBox(antoinettefirst);
     });
 
     $("#travel").on("click", function() {

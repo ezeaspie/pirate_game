@@ -1,3 +1,11 @@
+:root {
+  --main-dialog-grey: #cccccc;
+  --main-accent-yellow: #FF9900;
+  --main-darker-grey: #999999;
+  --main-light-brown: #CC6633;
+  --main-dark-brown: #771100;
+}
+
 html {
   z-index:0;
   width:100%;
@@ -11,6 +19,7 @@ html {
   background: linear-gradient(to bottom, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%);
 }
 
+/*STYLES FOR THE COMBAT INTERFACE*/
 #game {
   border: solid 3px;
 }
@@ -143,4 +152,65 @@ html {
     transform: scale(1,1);
     opacity: 0;
   }
+}
+
+/*STYLES FOR DIALOGUE BOXES*/
+
+.dialoguebox {
+  background:rgba(0,0,0,.5);
+  opacity: 0;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  position: absolute;
+  display: none;
+}
+.character {
+  display:flex;
+  align-items: center;
+}
+.person-image {
+  border:dotted 2px;
+  height:200px;
+  width:160px;
+  margin: 0 2em 0 0;
+}
+.character p {
+  max-width: 380px;
+}
+.dialogue {
+  display:flex;
+  flex-direction: column;
+  position: absolute;
+  left:50%;
+  top:5%;
+  margin-left:-300px;
+  width:600px;
+  padding:1em 2em;
+  background: var(--main-dialog-grey);
+}
+.dialoguebox button {
+  background: var(--main-light-brown);
+  border:0;
+  border-radius: 5px;
+  padding:1em;
+  margin: 1em 0;
+  transition: background ease-in-out .5s;
+}
+
+.dialoguebox button:hover {
+  background: var(--main-accent-yellow);
+  transition: background ease-in-out .5s;
+  cursor: pointer;
+}
+
+.fadeout {
+  opacity: 0;
+  transition: opacity .5s;
+}
+
+.fadein {
+  opacity: 1;
+  transition: opacity .5s;
 }
